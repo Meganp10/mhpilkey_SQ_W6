@@ -32,6 +32,8 @@ const WORLD_H = 2000; // total world height in pixels
 // ------------------------------------------------------------
 let camX = 0;
 let camY = 0;
+let backgroundimg; // optional — load a background image in preload() and draw in drawBackground()
+let backgroundSound;
 const CAM_SMOOTHING = 0.1;
 
 // ------------------------------------------------------------
@@ -139,6 +141,11 @@ let gameState = STATE_PLAY;
 function preload() {
   enemyData    = loadJSON("data/enemies.json");
   obstacleData = loadJSON("data/obstacles.json");
+  backgroundimg = loadImage("assets/images/backgroundimg.png");
+  hitSound       = loadSound("assets/sounds/hit.mp3");
+  backgroundSound = loadSound("assets/sounds/backgroundwolf.mp3");
+  jumpSound       = loadSound("assets/sounds/jump.mp3");
+  winSound        = loadSound("assets/sounds/win.mp3");
 
   // Uncomment to load sounds:
   // shootSound     = loadSound("assets/sounds/shoot.wav");
@@ -155,6 +162,12 @@ function preload() {
 // ============================================================
 function setup() {
   createCanvas(800, 450);
+
+  userStartAudio();
+
+  backgroundSound.setVolume(0.4);
+  backgroundSound.loop();
+
   bossData = enemyData.boss;
 
   // Build obstacle objects from JSON
@@ -188,7 +201,7 @@ function setup() {
 // draw()
 // ============================================================
 function draw() {
-  background(20);
+  background(backgroundimg || 20);
 
   updateCamera();
 
