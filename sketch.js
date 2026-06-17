@@ -165,7 +165,7 @@ function preload() {
 function setup() {
   createCanvas(800, 450);
 
-    //noSmooth();
+    noSmooth();
 
   userStartAudio();
 
@@ -860,20 +860,20 @@ function drawPlayer() {
   // DRAW SPRITE
   // =====================================================
   image(
-    villagerSprite,
+  villagerSprite,
 
-    player.x,
-    player.y,
+  player.x,
+  player.y,
 
-    frameW * scaleSize,
-    frameH * scaleSize,
+  frameW * scaleSize,
+  frameH * scaleSize,
 
-    frame * frameW,
-    row * frameH,
+  frame * frameW + 2,
+  row * frameH + 2,
 
-    frameW,
-    frameH
-  );
+  frameW - 4,
+  frameH - 4
+);
 
   pop();
 }
