@@ -146,6 +146,8 @@ function preload() {
   backgroundSound = loadSound("assets/sounds/backgroundwolf.mp3");
   jumpSound       = loadSound("assets/sounds/jump.mp3");
   winSound        = loadSound("assets/sounds/win.mp3");
+  villagerSprite = loadImage("assets/images/villagerss.png");
+
 
   // Uncomment to load sounds:
   // shootSound     = loadSound("assets/sounds/shoot.wav");
@@ -162,6 +164,8 @@ function preload() {
 // ============================================================
 function setup() {
   createCanvas(800, 450);
+
+    //noSmooth();
 
   userStartAudio();
 
@@ -805,35 +809,73 @@ function drawBullets() {
 // Drawn in world coordinates. Flickers while invincible.
 // ------------------------------------------------------------
 function drawPlayer() {
+
   if (player.invincible && floor(player.invincibleTimer / 6) % 2 === 0) return;
 
   push();
-  fill(0, 200, 180);
-  noStroke();
 
-  beginShape();
-  let numPoints = 48;
-  for (let i = 0; i < numPoints; i++) {
-    let angle    = (TWO_PI / numPoints) * i;
-    let noiseVal = noise(cos(angle) * 0.8 + player.blobT, sin(angle) * 0.8 + player.blobT);
-    let r        = player.r + map(noiseVal, 0, 1, -6, 6);
-    vertex(player.x + cos(angle) * r, player.y + sin(angle) * r);
+  imageMode(CENTER);
+
+  // =====================================================
+  // SPRITE SETTINGS
+  // =====================================================
+  let frameW = 256;
+  let frameH = 256;
+
+  let scaleSize = 0.25;
+
+  // =====================================================
+  // DETERMINE DIRECTION ROW
+  // =====================================================
+  let row = 0;
+
+  // down
+  if (player.direction.y > 0) row = 0;
+
+  // up
+  else if (player.direction.y < 0) row = 1;
+
+  // right
+  else if (player.direction.x > 0) row = 2;
+
+  // left
+  else if (player.direction.x < 0) row = 3;
+
+  // =====================================================
+  // WALKING ANIMATION
+  // =====================================================
+  let moving =
+    keyIsDown(87) ||
+    keyIsDown(83) ||
+    keyIsDown(65) ||
+    keyIsDown(68);
+
+  let frame = 0;
+
+  if (moving) {
+    frame = floor(frameCount / 10) % 4;
   }
-  endShape(CLOSE);
 
-  fill(10);
-  ellipse(player.x - 7, player.y - 5, 7, 7);
-  ellipse(player.x + 7, player.y - 5, 7, 7);
+  // =====================================================
+  // DRAW SPRITE
+  // =====================================================
+  image(
+    villagerSprite,
 
-  fill(255);
-  ellipse(
-    player.x + player.direction.x * (player.r - 4),
-    player.y + player.direction.y * (player.r - 4),
-    8
+    player.x,
+    player.y,
+
+    frameW * scaleSize,
+    frameH * scaleSize,
+
+    frame * frameW,
+    row * frameH,
+
+    frameW,
+    frameH
   );
 
   pop();
-  player.blobT += 0.015;
 }
 
 // ------------------------------------------------------------
