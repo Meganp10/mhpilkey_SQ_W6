@@ -344,6 +344,7 @@ function checkObstaclePlayerCollision() {
 
     if (d < player.r) {
       player.health--;
+      hitSound.play();
       player.invincible      = true;
       player.invincibleTimer = INVINCIBLE_FRAMES;
 
@@ -356,7 +357,7 @@ function checkObstaclePlayerCollision() {
         player.bounceVY = (dy / len) * 8;
       }
 
-      // playerHitSound.play();
+
 
       if (player.health <= 0) {
         gameState = STATE_OVER;
@@ -464,6 +465,8 @@ function handleInput() {
       vx: player.direction.x * BULLET_SPEED,
       vy: player.direction.y * BULLET_SPEED,
     });
+
+    jumpSound.play();
     player.shootTimer = SHOOT_COOLDOWN;
     // shootSound.play();
   }
@@ -632,7 +635,7 @@ function checkBulletBossCollision() {
     if (d < boss.r + 6) {
       bullets.splice(i, 1);
       boss.health--;
-      // bossHitSound.play();
+      hitSound.play();
 
       if (boss.health <= 0) {
         gameState = STATE_WIN;
@@ -653,6 +656,7 @@ function checkBossPlayerCollision() {
   let d = dist(player.x, player.y, boss.x, boss.y);
   if (d < player.r + boss.r - 10) {
     player.health--;
+    hitSound.play();
     player.invincible      = true;
     player.invincibleTimer = INVINCIBLE_FRAMES;
     // playerHitSound.play();
@@ -674,6 +678,7 @@ function checkEnemyPlayerCollision() {
     let d = dist(player.x, player.y, enemies[i].x, enemies[i].y);
     if (d < player.r + enemies[i].r - 8) {
       player.health--;
+      hitSound.play();
       player.invincible      = true;
       player.invincibleTimer = INVINCIBLE_FRAMES;
       // playerHitSound.play();
