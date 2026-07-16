@@ -147,7 +147,6 @@ function preload() {
   jumpSound       = loadSound("assets/sounds/jump.mp3");
   winSound        = loadSound("assets/sounds/win.mp3");
   villagerSprite = loadImage("assets/images/villagerss.png");
-  goatSprite     = loadImage("assets/images/goat_sprite sheet.png");
 
 
   // Uncomment to load sounds:
@@ -817,37 +816,30 @@ function drawPlayer() {
 
   imageMode(CENTER);
 
- // =====================================================
-// SPRITE SETTINGS
-// =====================================================
-let frameW = goatSprite.width / 6;   // ≈264.17
-let frameH = goatSprite.height / 4;  // 248
+  // =====================================================
+  // SPRITE SETTINGS
+  // =====================================================
+  let frameW = 256;
+  let frameH = 256;
 
-// Adjust until the goat is the size you want
-let scaleSize = 0.30;
+  let scaleSize = 0.25;
 
   // =====================================================
   // DETERMINE DIRECTION ROW
   // =====================================================
- 
-let row = 2; // Default: facing toward (S)
+  let row = 0;
 
-if (player.direction.y < 0) {
-  // W - walking away
-  row = 0;
-}
-else if (player.direction.x < 0) {
-  // A - walking left
-  row = 1;
-}
-else if (player.direction.y > 0) {
-  // S - walking toward
-  row = 2;
-}
-else if (player.direction.x > 0) {
-  // D - walking right
-  row = 3;
-}
+  // down
+  if (player.direction.y > 0) row = 0;
+
+  // up
+  else if (player.direction.y < 0) row = 1;
+
+  // right
+  else if (player.direction.x > 0) row = 2;
+
+  // left
+  else if (player.direction.x < 0) row = 3;
 
   // =====================================================
   // WALKING ANIMATION
@@ -858,28 +850,29 @@ else if (player.direction.x > 0) {
     keyIsDown(65) ||
     keyIsDown(68);
 
- let frame = 0;
+  let frame = 0;
 
-if (moving) {
-  frame = floor(frameCount / 8) % 6;
-}
+  if (moving) {
+    frame = floor(frameCount / 10) % 4;
+  }
 
   // =====================================================
   // DRAW SPRITE
   // =====================================================
-image(
-  goatSprite,
+  image(
+  villagerSprite,
+
   player.x,
   player.y,
 
   frameW * scaleSize,
   frameH * scaleSize,
 
-  frame * frameW,
-  row * frameH,
+  frame * frameW + 2,
+  row * frameH + 2,
 
-  frameW,
-  frameH
+  frameW - 4,
+  frameH - 4
 );
 
   pop();
